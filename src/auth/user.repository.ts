@@ -22,13 +22,26 @@ export class UserRepository extends Repository<User> {
     } catch (error) {
       if (error.code === '23505') {
         throw new ConflictException('Username already exists');
-      } else {
-        throw new InternalServerErrorException();
       }
+      throw new InternalServerErrorException();
     }
   }
 
   private async hashPassword(password: string, salt: string): Promise<string> {
     return bcrypt.hash(password, salt);
+  }
+
+  async validadeUserPassword(
+    authCredentialsDto: AuthCredentialsDto,
+  ): Promise<string> {
+    const { username, password } = authCredentialsDto;
+
+    const user = await this.findOne({ username });
+
+    if (user && (await user.validatePassword(password))) {
+      return user.username;
+    }
+
+    return null;
   }
 }
