@@ -1,5 +1,5 @@
 db:
-  host: 127.0.0.1
+  host: 'tasks-nestjs_postgres_1' # container name
   username: 'postgres'
   password: 'root'
   synchronize: true

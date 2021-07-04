@@ -1,0 +1,24 @@
+version: '3.8'
+services:
+  container_name: tasks-nestjs_postgres_1
+  api:
+    build:
+      dockerfile: Dockerfile
+      context: .
+    depends_on:
+      - postgres
+    environment:
+      DATABASE_URL: postgres://postgres:root@postgres:5432/db
+      NODE_ENV: development
+      PORT: 3001
+    ports:
+      - '8082:3001'
+
+  postgres:
+    image: postgres:10.4
+    ports:
+      - '35000:5432'
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: root
+      POSTGRES_DB: db
