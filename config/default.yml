@@ -8,3 +8,5 @@ db:
 
 jwt:
   expiresIn: 3600
+
+stage: 'dev'

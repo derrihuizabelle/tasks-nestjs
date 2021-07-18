@@ -3,7 +3,13 @@ import * as config from 'config';
 
 const dbConfig = config.get('db');
 
+const isProduction = config.get('stage') === 'prod';
+
 export const typeOrmConfig: TypeOrmModuleOptions = {
+  ssl: isProduction,
+  extra: {
+    ssl: isProduction ? { rejectUnauthorized: false } : null,
+  },
   type: dbConfig.type,
   host: process.env.RDS_HOSTNAME || dbConfig.host,
   port: process.env.RDS_PORT || dbConfig.port,
