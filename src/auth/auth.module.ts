@@ -7,6 +7,7 @@ import { JwtModule } from '@nestjs/jwt';
 import { PassportModule } from '@nestjs/passport';
 import { JwtEstrategy } from './jwt.strategy';
 import * as config from 'config';
+import { ConfigModule, ConfigService } from '@nestjs/config';
 
 const jwtConfig = config.get('jwt');
 @Module({
@@ -14,11 +15,15 @@ const jwtConfig = config.get('jwt');
     PassportModule.register({
       defaultStrategy: 'jwt',
     }),
-    JwtModule.register({
-      secret: process.env.JWT_SECRET || jwtConfig.secret,
-      signOptions: {
-        expiresIn: jwtConfig.expiresIn,
-      },
+    JwtModule.registerAsync({
+      imports: [ConfigModule],
+      inject: [ConfigService],
+      useFactory: async (configService: ConfigService) => ({
+        secret: configService.get('JWT_SECRET'),
+        signOptions: {
+          expiresIn: jwtConfig.expiresIn,
+        },
+      }),
     }),
     TypeOrmModule.forFeature([UserRepository]),
   ],
