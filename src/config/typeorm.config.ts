@@ -3,7 +3,7 @@ import * as config from 'config';
 
 const dbConfig = config.get('db');
 
-const isProduction = config.get('stage') === 'prod';
+const isProduction = process.env.STAGE || config.get('stage') === 'prod';
 
 export const typeOrmConfig: TypeOrmModuleOptions = {
   ssl: isProduction,
