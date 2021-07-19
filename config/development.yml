@@ -1,8 +1,0 @@
-db:
-  host: 'tasks-nestjs_postgres_1' # container name
-  username: 'postgres'
-  password: 'root'
-  synchronize: true
-
-jwt:
-  secret: 'senhadanasa'
